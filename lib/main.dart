@@ -5,6 +5,7 @@ import 'package:convert/convert.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -157,10 +158,28 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(
             height: 12,
           ),
-          Text(
-            decryptedMnemonic,
-            textAlign: TextAlign.center,
-          ),
+          if (controller.text.isNotEmpty && decryptedMnemonic != '密碼錯誤')
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  decryptedMnemonic,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.green),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: decryptedMnemonic));
+                  },
+                  icon: const Icon(Icons.copy),
+                ),
+              ],
+            )
+          else
+            Text(
+              decryptedMnemonic,
+              textAlign: TextAlign.center,
+            )
           // Button
         ],
       ),
